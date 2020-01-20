@@ -1,44 +1,58 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 
-const Button = ({onClick, text}) => (
+const History = (props) => {
+    if (props.allClicks.length === 0) {
+        return (
+            <div>
+                the app is used by pressing the buttons
+            </div>
+        )
+    }
+    return (
+        <div>
+            button press history: {props.allClicks.join('---')}
+        </div>
+    )
+}
+
+const Button = (props) => {
+    console.log('props value is ',props);
+    const {onClick, text} = props
+    return (
     <button onClick={onClick}>
         {text}
     </button>
 )
-
-const Display = ({counter}) => 
-        <div>{counter}</div>
+    }
 
 const App = (props) => {
-    const [ counter, setCounter ] = useState(0)
+    const [left, setLeft] = useState(0)
+    const [right, setRight] = useState(0)
+    const [allClicks, setAll] = useState([])
 
-    const setValue = (value) => setCounter(value)
+const handleLeftClcik = () => {
+    setAll(allClicks.concat('L'))
+    setLeft(left + 1)
+}
+const handleRightClcik = () => 
+    {
+        setAll(allClicks.concat('R'))
+        setRight(right + 1)
+    }
 
-    // const setValue = (value) => {
-    //     return () => {
-    //         setCounter (value);
-    //     }
-    // }
 
-    return (
+return (
+    <div>
         <div>
-
-            <Display counter = {counter} />
-            <Button onClick={() => setValue(counter+1)}
-            // {/* <button onClick={setValue(counter+1)}> */}
-                text = 'plus'
-            />
-            <Button onClick={() => setValue(counter - 1)} 
-            text = 'minus'
-            />
-
-            <Button onClick={() => setValue(0)}
-            // {/* <button onClick={setValue(0)}> */}
-                text = 'reset'
-            />
+            {left}
+            <Button onClick={handleLeftClcik} text='left'/>
+            <Button onClick={handleRightClcik} text='right'/>
+            {right}
+            <History allClicks = {allClicks} />
         </div>
-    )
+    </div>
+)
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
